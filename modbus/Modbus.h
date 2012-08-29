@@ -11,18 +11,9 @@
 #include <cfg/SerialConfig.h>
 
 #include <modbus/modbus.h>
-#include <stdexcept>
+#include <exceptions/ModbusException.h>
 #include <string>
-#include <errno.h>
 
-class ModbusException : public std::runtime_error {
-public:
-	int err;
-	ModbusException(const std::string& arg) :
-		std::runtime_error((arg + ": " ) + modbus_strerror(errno)) {
-		err = errno;
-	}
-};
 
 class Modbus {
 private:
