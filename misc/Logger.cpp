@@ -25,6 +25,8 @@
 #include <sstream>
 #include <iostream>
 
+using namespace ecce;
+namespace ecce {
 Logger::Logger(std::string logname, int loglevel) :
 		itsLogname(logname)
 {
@@ -169,4 +171,5 @@ std::ostream& Logger::out(logLevel loglevel)
 		else
 			return std::cerr << std::hex << ((pthread_self() >> 7) & 0xFFF) << std::dec << " " ;
 	}
+}
 }

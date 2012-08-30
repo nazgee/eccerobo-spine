@@ -1,31 +1,35 @@
 /*
- * Server.cpp
+ * Runner.cpp
  *
- *  Created on: Aug 29, 2012
+ *  Created on: Aug 30, 2012
  *      Author: nazgee
  */
 
-#include "Server.h"
+#include "Runner.h"
 #include <misc/Logger.h>
 #include <exceptions/SystemException.h>
 
-static Logger logger("Server");
+using namespace ecce;
+static typename ecce::Logger logger("Runner");
 
-Server::Server() {
+
+
+Runner::Runner() {
+
 }
 
-Server::~Server() {
+Runner::~Runner() {
 }
 
-void Server::run() {
+void Runner::run() {
 	int pid = 0;
 
-	HandlerIterator ib = mHandlers.begin();
-	HandlerIterator ie = mHandlers.end();
-	HandlerPtr handler;
+	ServerIterator ib = mHandlers.begin();
+	ServerIterator ie = mHandlers.end();
+	ServerPtr server;
 
 	for (; ib != ie; ++ib) {
-		handler = *ib;
+		server = *ib;
 
 		/**
 		 * Create child process for each handler
@@ -45,11 +49,10 @@ void Server::run() {
 
 	if (pid == 0) {
 		// This is the child process
-		handler->manage();
+		server->Start();
 		DBG << "@child; client handled " << getpid() << std::endl;
 	} else {
 		sleep(30);
 		DBG << "@parent; finished sleeping" << std::endl;
 	}
 }
-

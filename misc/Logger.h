@@ -16,8 +16,8 @@
 	You should have received a copy of the GNU Lesser General Public License
 	along with libsockets.  If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef LOGGER_H_
-#define LOGGER_H_
+#ifndef ECCELOGGER_H_
+#define ECCELOGGER_H_
 
 #include <typeinfo>
 #include <iostream>
@@ -27,6 +27,7 @@
 
 #include <stdlib.h>
 
+namespace ecce {
 //=============================================================================
 /* Sole purpose of this class is to discard all that goes into it */
 struct NullStream: std::ostream
@@ -130,5 +131,5 @@ public:
 #define ERR 			LOG_PRINT_CLASS(Logger::logError) << LOG_MARKER_ERR
 #define ERR_FUNC		LOG_PRINT_FUNC(Logger::logError) << LOG_MARKER_ERR
 
-
+} //ecce
 #endif /* LOGGER_H_ */

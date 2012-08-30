@@ -5,17 +5,18 @@ CXXFLAGS =	-O2 -g -Wall -fmessage-length=0 -std=c++0x \
 	-I./ \
 	$(shell pkg-config --cflags libmodbus)
 
-OBJS =		motord.o cfg/Config.o modbus/Modbus.o \
+OBJS =	spine.o \
+	cfg/Config.o \
+	modbus/Modbus.o \
 	misc/Logger.o \
 	misc/Interruptible.o \
-	sockets/Handler.o \
-	sockets/Socket.o \
-	sockets/Server.o \
-	EchoHandler.o
+	param/ParamMessage.o \
+	Runner.o
 
-LIBS = $(shell pkg-config --libs libmodbus)
 
-TARGET =	motord
+LIBS = $(shell pkg-config --libs libmodbus) -losock-1.0
+
+TARGET =	spine
 
 $(TARGET):	$(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LIBS)
