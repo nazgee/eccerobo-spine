@@ -9,9 +9,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <memory>
 
 #include <cfg/Config.h>
 #include <modbus/Modbus.h>
+#include <sockets/Server.h>
+#include <EchoHandler.h>
 
 int main(int argc, char **argv) {
 	Config cfg(argc, argv);
@@ -21,8 +24,12 @@ int main(int argc, char **argv) {
 		std::cout << cfg.toString() << std::endl;
 	}
 
-	Modbus mb(cfg.serial);
-	mb.testrun();
+//	Modbus mb(cfg.serial);
+//	mb.testrun();
+
+	Server srv;
+	srv.install(std::shared_ptr<Handler>(new EchoHandler("/tmp/foo")));
+	srv.run();
 
 	return EXIT_SUCCESS;
 }

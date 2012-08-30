@@ -9,6 +9,8 @@
 #define SYSTEMEXCEPTION_H_
 
 #include <errno.h>
+#include <stdexcept>
+#include <string.h>
 
 class SystemException : public std::runtime_error {
 	int err;
