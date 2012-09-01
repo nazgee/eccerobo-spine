@@ -14,10 +14,8 @@
 #include <cfg/Config.h>
 #include <modbus/Modbus.h>
 #include <osock-1.0/osock.h>
-#include <Runner.h>
 #include <memory>
 
-using namespace ecce;
 int main(int argc, char **argv) {
 	Config cfg(argc, argv);
 
@@ -26,16 +24,8 @@ int main(int argc, char **argv) {
 		std::cout << cfg.toString() << std::endl;
 	}
 
-	ServerPtr srv1 = ServerPtr(new osock::ServerEcho(osock::AuthNone::Populate(), "10237"));
-//	ServerPtr srv2 = ServerPtr(new osock::ServerEcho(osock::AuthNone::Populate(), "10238"));
-//	ServerPtr srv3 = ServerPtr(new osock::ServerEcho(osock::AuthNone::Populate(), "10239"));
-
-	Runner runner;
-	runner.install(srv1);
-//	runner.install(srv2);
-//	runner.install(srv3);
-
-	runner.run();
+	osock::ServerEcho server = osock::ServerEcho(osock::AuthNone::Populate(), "10237");
+	server.Start();
 
 //	Modbus mb(cfg.serial);
 //	mb.testrun();
