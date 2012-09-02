@@ -5,8 +5,8 @@
  *      Author: nazgee
  */
 
-#ifndef SYSTEMEXCEPTION_H_
-#define SYSTEMEXCEPTION_H_
+#ifndef TOKENIZINGEXCEPTION_H_
+#define TOKENIZINGEXCEPTION_H_
 
 #include <errno.h>
 #include <stdexcept>

@@ -28,12 +28,14 @@ int main(int argc, char **argv) {
 		std::cout << cfg.toString() << std::endl;
 	}
 
+	std::shared_ptr<Modbus> modbus = std::shared_ptr<Modbus>(new Modbus(cfg.serial));
+
 	// Prevent zombies creation
 	osock::Server::InstallChildReaper();
-	SpineServer server = SpineServer(osock::AuthNone::Populate(), "10237");
+	SpineServer server = SpineServer(modbus, osock::AuthNone::Populate(), "10237");
 	server.Start();
 
-//	Modbus mb(cfg.serial);
+
 //	mb.testrun();
 
 	return EXIT_SUCCESS;

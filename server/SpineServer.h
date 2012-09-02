@@ -9,21 +9,17 @@
 #define SPINESERVER_H_
 
 #include <osock-1.0/osock.h>
+#include "CompareString.h"
+#include "Handler.h"
 
 namespace ecce {
 
 class SpineServer : public osock::Server {
-	struct classcompstring {
-		bool operator()(const std::string& lhs, const std::string& rhs) const {
-			return (strcmp(lhs.c_str() , rhs.c_str())) < 0;
-		}
-	};
-
 	enum cmds {
 		CMD_GET = 1,
 		CMD_SET
 	};
-	std::map<std::string, enum cmds, classcompstring> mMapCmds;
+	std::map<std::string, enum cmds, CompareString> mMapCmds;
 
 	enum actors {
 		ACTOR_MOTOR1 = 1,
@@ -31,10 +27,11 @@ class SpineServer : public osock::Server {
 		ACTOR_HEAD_SERVO,
 		ACTOR_ULTRASONIC_SENSOR
 	};
-	std::map<std::string, enum actors, classcompstring> mMapActors;
+	std::map<std::string, enum actors, CompareString> mMapActors;
 
+	Handler_p mHandler;
 public:
-	SpineServer(osock::Auth_p auth, std::string portname, osock::Server::serviceType servicetype = serviceCallback);
+	SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std::string portname, osock::Server::serviceType servicetype = serviceCallback);
 	virtual ~SpineServer();
 	virtual void Manage(osock::BIO_p bio);
 };
