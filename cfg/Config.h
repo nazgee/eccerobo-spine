@@ -12,14 +12,17 @@
 #include "SerialConfig.h"
 
 class Config {
+	int mSilent;
+	std::string mPort;
 public:
 	Config(int argc, char **argv);
 	SerialConfig serial;
 	bool isVerbose() { return !mSilent; }
 	std::string toString();
 
-private:
-	int mSilent;
+	std::string getPort() const {
+		return mPort;
+	}
 };
 
 #endif /* CONFIG_H_ */

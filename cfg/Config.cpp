@@ -16,7 +16,8 @@
 
 
 Config::Config(int argc, char **argv) :
-	mSilent(0) {
+	mSilent(0),
+	mPort("1111") {
 	int c;
 
 	while (1) {
@@ -28,13 +29,14 @@ Config::Config(int argc, char **argv) :
 				{ "device", required_argument, NULL, 'd' },
 				{ "baud", required_argument, NULL, 'b' },
 				{ "parity", required_argument, NULL, 'p' },
+				{ "port", required_argument, NULL, 't' },
 				{ 0, 0, 0, 0 }
 			};
 
 		/* getopt_long stores the option index here. */
 		int option_index = 0;
 
-		c = getopt_long(argc, argv, "d:b:p:", long_options, &option_index);
+		c = getopt_long(argc, argv, "d:b:p:t:", long_options, &option_index);
 
 		/* Detect the end of the options. */
 		if (c == -1)
@@ -66,7 +68,9 @@ Config::Config(int argc, char **argv) :
 				throw std::invalid_argument("Invalid baud rate given");
 			}
 		} break;
-
+		case 't': {
+			mPort = optarg;
+		} break;
 		case '?':
 			/* getopt_long already printed an error message. */
 			throw std::invalid_argument("Bad params given!");
