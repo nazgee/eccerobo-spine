@@ -9,7 +9,7 @@ OBJS =	spine.o \
 	cfg/Config.o \
 	modbus/Modbus.o \
 	misc/Logger.o \
-	misc/Interruptible.o
+	server/SpineServer.o
 
 
 LIBS = $(shell pkg-config --libs libmodbus) -losock-1.0

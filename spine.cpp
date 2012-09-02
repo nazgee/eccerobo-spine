@@ -9,12 +9,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <memory>
-
 #include <cfg/Config.h>
 #include <modbus/Modbus.h>
 #include <osock-1.0/osock.h>
 #include <memory>
+#include <signal.h>
+
+#include "server/SpineServer.h"
+
+using namespace ecce;
+
 
 int main(int argc, char **argv) {
 	Config cfg(argc, argv);
@@ -24,7 +28,9 @@ int main(int argc, char **argv) {
 		std::cout << cfg.toString() << std::endl;
 	}
 
-	osock::ServerEcho server = osock::ServerEcho(osock::AuthNone::Populate(), "10237");
+	// Prevent zombies creation
+	osock::Server::InstallChildReaper();
+	SpineServer server = SpineServer(osock::AuthNone::Populate(), "10237");
 	server.Start();
 
 //	Modbus mb(cfg.serial);
