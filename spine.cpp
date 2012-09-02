@@ -35,8 +35,5 @@ int main(int argc, char **argv) {
 	SpineServer server = SpineServer(modbus, osock::AuthNone::Populate(), "10237");
 	server.Start();
 
-
-//	mb.testrun();
-
 	return EXIT_SUCCESS;
 }
