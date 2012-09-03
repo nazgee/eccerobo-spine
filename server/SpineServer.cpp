@@ -10,6 +10,7 @@
 #include "../misc/Logger.h"
 #include "TokenizingException.h"
 #include "HandlerModbus.h"
+#include "HandlerFile.h"
 
 #include <boost/tokenizer.hpp>
 #include <map>
@@ -25,18 +26,24 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 	Handler_p getter = Handler_p(new Handler());
 	Handler_p get_motor1 = Handler_p(new HandlerModbus(modbus, 499));
 	Handler_p get_motor2 = Handler_p(new HandlerModbus(modbus, 500));
+	Handler_p get_range = Handler_p(new HandlerFile("/dev/ultrasonic.0.hcsr04"));
+	Handler_p get_servo = Handler_p(new HandlerFile("/dev/servodrive1"));
 
 	Handler_p setter = Handler_p(new Handler());
 	Handler_p set_motor1 = Handler_p(new HandlerModbus(modbus, 499, true));
 	Handler_p set_motor2 = Handler_p(new HandlerModbus(modbus, 500, true));
+	Handler_p set_servo = Handler_p(new HandlerFile("/dev/servodrive1", true));
 
 	mHandler->install("get", getter);
 	getter->install("motor1", get_motor1);
 	getter->install("motor2", get_motor2);
+	getter->install("range", get_range);
+	getter->install("servo", get_servo);
 
 	mHandler->install("set", setter);
 	setter->install("motor1", set_motor1);
 	setter->install("motor2", set_motor2);
+	setter->install("servo", set_servo);
 }
 
 SpineServer::~SpineServer() {

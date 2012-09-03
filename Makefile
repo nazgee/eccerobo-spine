@@ -12,7 +12,8 @@ OBJS =	spine.o \
 	misc/Logger.o \
 	server/SpineServer.o \
 	server/Handler.o \
-	server/HandlerModbus.o
+	server/HandlerModbus.o \
+	server/HandlerFile.o
 
 ifeq ($(ARCH),arm)
 LIBS = -L/home/nazgee/Workspace/eclipse/libosock-dev/output-arm/lib
