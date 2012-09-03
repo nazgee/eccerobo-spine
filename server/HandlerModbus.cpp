@@ -47,7 +47,7 @@ std::shared_ptr<osock::Message> HandlerModbus::handle(const std::string& current
 }
 
 void HandlerModbus::write(uint16_t value) {
-	mModbus->readRegisters(mModbusAddress, 1, &value);
+	mModbus->writeRegisters(mModbusAddress, 1, &value);
 }
 
 uint16_t HandlerModbus::read() {
