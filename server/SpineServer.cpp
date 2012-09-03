@@ -44,6 +44,13 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 	setter->install("motor1", set_motor1);
 	setter->install("motor2", set_motor2);
 	setter->install("servo", set_servo);
+
+//	std::string s = "this is just a test, of -neg valuese -10\r\n";
+//	tokenizer tokens(s, boost::char_separator<char>(" \r\n"));
+//
+//	for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter)
+//		std::cout << "<" << *tok_iter << "> ";
+//	std::cout << "\n";
 }
 
 SpineServer::~SpineServer() {
@@ -58,14 +65,14 @@ void SpineServer::Manage(osock::BIO_p bio) {
 	while(1) {
 		parser.Receive(msg);
 
-		tokenizer tok(msg, boost::char_separator<char>(" "));
-		tokenizer::iterator beg = tok.begin();
+		tokenizer tokens(msg, boost::char_separator<char>(" \r\n"));
+		tokenizer::iterator tok = tokens.begin();
 
-		if (beg == tok.end()) {
+		if (tok == tokens.end()) {
 			throw TokenizingException("empty CMD");
 		}
 
-		parser.Send(*mHandler->handle("", beg).get());
+		parser.Send(*mHandler->handle("", tok).get());
 	}
 
 	NFO << "client is gone" << std::endl;
