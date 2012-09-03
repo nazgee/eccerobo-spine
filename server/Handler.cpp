@@ -23,7 +23,7 @@ void Handler::install(std::string chunk, Handler_p handler) {
 	mHandlers[chunk] = handler;
 }
 
-std::shared_ptr<osock::Message> Handler::handle(const std::string& current_token, boost::tokenizer<>::iterator &tok) {
+std::shared_ptr<osock::Message> Handler::handle(const std::string& current_token, tokenizer::iterator &tok) {
 	try {
 		std::string token = getToken(tok);
 		Handler_p handler = getHandler(token);
@@ -34,7 +34,7 @@ std::shared_ptr<osock::Message> Handler::handle(const std::string& current_token
 	}
 }
 
-std::string Handler::getToken(boost::tokenizer<>::iterator &tok) {
+std::string Handler::getToken(tokenizer::iterator &tok) {
 	if (tok.at_end()) {
 		throw TokenizingException("no token!");
 	}

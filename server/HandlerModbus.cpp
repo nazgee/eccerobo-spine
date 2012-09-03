@@ -23,7 +23,7 @@ HandlerModbus::HandlerModbus(std::shared_ptr<Modbus> modbus, int address, bool w
 HandlerModbus::~HandlerModbus() {
 }
 
-std::shared_ptr<osock::Message> HandlerModbus::handle(const std::string& current_token, boost::tokenizer<>::iterator &tok) {
+std::shared_ptr<osock::Message> HandlerModbus::handle(const std::string& current_token, tokenizer::iterator &tok) {
 
 	uint16_t value;
 	try {

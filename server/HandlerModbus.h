@@ -22,7 +22,7 @@ class HandlerModbus: public ecce::Handler {
 public:
 	HandlerModbus(std::shared_ptr<Modbus> modbus, int address, bool write = false);
 	virtual ~HandlerModbus();
-	std::shared_ptr<osock::Message> handle(const std::string& current_token, boost::tokenizer<>::iterator &tok);
+	std::shared_ptr<osock::Message> handle(const std::string& current_token, tokenizer::iterator &tok);
 protected:
 	void write(uint16_t value);
 	uint16_t read();

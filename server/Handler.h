@@ -18,6 +18,7 @@
 namespace ecce {
 class Handler;
 typedef std::shared_ptr<Handler> Handler_p;
+typedef boost::tokenizer< boost::char_separator<char> > tokenizer;
 
 class Handler {
 public:
@@ -27,9 +28,9 @@ public:
 	Handler();
 	virtual ~Handler();
 	void install(std::string chunk, Handler_p handler);
-	virtual std::shared_ptr<osock::Message> handle(const std::string& current_token, boost::tokenizer<>::iterator &tok);
+	virtual std::shared_ptr<osock::Message> handle(const std::string& current_token, tokenizer::iterator &tok);
 protected:
-	std::string getToken(boost::tokenizer<>::iterator &tok);
+	std::string getToken(tokenizer::iterator &tok);
 	Handler_p getHandler(std::string token);
 private:
 	std::map<std::string, Handler_p> mHandlers;

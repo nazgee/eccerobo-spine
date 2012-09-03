@@ -58,8 +58,8 @@ void SpineServer::Manage(osock::BIO_p bio) {
 	while(1) {
 		parser.Receive(msg);
 
-		boost::tokenizer<> tok(msg);
-		boost::tokenizer<>::iterator beg = tok.begin();
+		tokenizer tok(msg, boost::char_separator<char>(" "));
+		tokenizer::iterator beg = tok.begin();
 
 		if (beg == tok.end()) {
 			throw TokenizingException("empty CMD");

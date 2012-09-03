@@ -33,7 +33,7 @@ HandlerFile::~HandlerFile() {
 	close(mFile);
 }
 
-std::shared_ptr<osock::Message> HandlerFile::handle(const std::string& current_token, boost::tokenizer<>::iterator &tok) {
+std::shared_ptr<osock::Message> HandlerFile::handle(const std::string& current_token, tokenizer::iterator &tok) {
 	lseek(mFile, SEEK_SET, 0);
 	if (mWrite) {
 		std::string token = getToken(tok);
