@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdexcept>
 
+namespace ecce {
 class ModbusException : public std::runtime_error {
 public:
 	int err;
@@ -23,5 +24,6 @@ public:
 		return err;
 	}
 };
+}
 
 #endif /* MODBUSEXCEPTION_H_ */

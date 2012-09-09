@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <string.h>
 
+namespace ecce {
 class SystemException : public std::runtime_error {
 	int err;
 public:
@@ -24,5 +25,6 @@ public:
 		return err;
 	}
 };
+}
 
 #endif /* SYSTEMEXCEPTION_H_ */
