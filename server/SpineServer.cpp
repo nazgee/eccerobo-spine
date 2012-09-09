@@ -24,25 +24,18 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 
 	mHandler = Handler_p(new Handler());
 	Handler_p getter = Handler_p(new Handler());
-	Handler_p get_motor = Handler_p(new HandlerModbus(modbus, 500));
-	Handler_p get_range = Handler_p(new HandlerFile("/dev/ultrasonic.0.hcsr04"));
-	Handler_p get_servo = Handler_p(new HandlerFile("/dev/servodrive1"));
-
 	Handler_p setter = Handler_p(new Handler());
-	Handler_p set_motor = Handler_p(new HandlerModbus(modbus, 500, true));
-	Handler_p set_servo1 = Handler_p(new HandlerFile("/dev/servodrive1", true));
-	Handler_p set_servo0 = Handler_p(new HandlerFile("/dev/servodrive0", true));
 
 	mHandler->install("get", getter);
-	getter->install("range", get_range);
-	getter->install("engine", get_motor);
-	getter->install("head", set_servo1);
-	getter->install("turn", set_servo0);
+	getter->install("range", Handler_p(new HandlerFile("/dev/ultrasonic.0.hcsr04")));
+	getter->install("engine", Handler_p(new HandlerModbus(modbus, 500)));
+	getter->install("head", Handler_p(new HandlerFile("/dev/servodrive1")));
+	getter->install("turn", Handler_p(new HandlerFile("/dev/servodrive0")));
 
 	mHandler->install("set", setter);
-	setter->install("engine", set_motor);
-	setter->install("head", set_servo1);
-	setter->install("turn", set_servo0);
+	setter->install("engine", Handler_p(new HandlerModbus(modbus, 500, true)));
+	setter->install("head", Handler_p(new HandlerFile("/dev/servodrive1", true)));
+	setter->install("turn", Handler_p(new HandlerFile("/dev/servodrive0", true)));
 
 //	std::string s = "this is just a test, of -neg valuese -10\r\n";
 //	tokenizer tokens(s, boost::char_separator<char>(" \r\n"));
