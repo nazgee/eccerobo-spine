@@ -24,26 +24,25 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 
 	mHandler = Handler_p(new Handler());
 	Handler_p getter = Handler_p(new Handler());
-	Handler_p get_motor1 = Handler_p(new HandlerModbus(modbus, 499));
-	Handler_p get_motor2 = Handler_p(new HandlerModbus(modbus, 500));
+	Handler_p get_motor = Handler_p(new HandlerModbus(modbus, 500));
 	Handler_p get_range = Handler_p(new HandlerFile("/dev/ultrasonic.0.hcsr04"));
 	Handler_p get_servo = Handler_p(new HandlerFile("/dev/servodrive1"));
 
 	Handler_p setter = Handler_p(new Handler());
-	Handler_p set_motor1 = Handler_p(new HandlerModbus(modbus, 499, true));
-	Handler_p set_motor2 = Handler_p(new HandlerModbus(modbus, 500, true));
-	Handler_p set_servo = Handler_p(new HandlerFile("/dev/servodrive1", true));
+	Handler_p set_motor = Handler_p(new HandlerModbus(modbus, 500, true));
+	Handler_p set_servo1 = Handler_p(new HandlerFile("/dev/servodrive1", true));
+	Handler_p set_servo0 = Handler_p(new HandlerFile("/dev/servodrive0", true));
 
 	mHandler->install("get", getter);
-	getter->install("motor1", get_motor1);
-	getter->install("motor2", get_motor2);
 	getter->install("range", get_range);
-	getter->install("servo", get_servo);
+	getter->install("engine", get_motor);
+	getter->install("head", set_servo1);
+	getter->install("turn", set_servo0);
 
 	mHandler->install("set", setter);
-	setter->install("motor1", set_motor1);
-	setter->install("motor2", set_motor2);
-	setter->install("servo", set_servo);
+	setter->install("engine", set_motor);
+	setter->install("head", set_servo1);
+	setter->install("turn", set_servo0);
 
 //	std::string s = "this is just a test, of -neg valuese -10\r\n";
 //	tokenizer tokens(s, boost::char_separator<char>(" \r\n"));
@@ -67,10 +66,6 @@ void SpineServer::Manage(osock::BIO_p bio) {
 
 		tokenizer tokens(msg, boost::char_separator<char>(" \r\n"));
 		tokenizer::iterator tok = tokens.begin();
-
-		if (tok == tokens.end()) {
-			throw TokenizingException("empty CMD");
-		}
 
 		parser.Send(*mHandler->handle("", tok).get());
 	}
