@@ -38,7 +38,7 @@ std::shared_ptr<osock::Message> HandlerModbus::handle(const std::string& current
 			return std::shared_ptr<osock::Message>(	new osock::StringMessage(REPLY_OK));
 		} else {
 			value = read();
-			std::string res = REPLY_OK + " " + current_token + " " + boost::lexical_cast<std::string>(value);
+			std::string res = REPLY_OK + " " + boost::lexical_cast<std::string>(value);
 			return std::shared_ptr<osock::Message>(	new osock::StringMessage(res));
 		}
 	} catch (ModbusException e) {
