@@ -21,6 +21,7 @@ Modbus::Modbus(SerialConfig config) {
 		throw ModbusException("modbus_new_rtu");
 	}
 
+//	modbus_flush(ctx);
 //	modbus_set_debug(ctx, true);
 
 	if (modbus_connect(ctx)) {
@@ -31,11 +32,13 @@ Modbus::Modbus(SerialConfig config) {
 		throw ModbusException("modbus_set_slave");
 	}
 
-	struct timeval response_timeout;
-	response_timeout.tv_sec = 5;
-	response_timeout.tv_usec = 0;
-	modbus_set_response_timeout(ctx, &response_timeout);
-	modbus_set_byte_timeout(ctx, &response_timeout);
+//	struct timeval response_timeout;
+//	response_timeout.tv_sec = 1;
+//	response_timeout.tv_usec = 500000;
+//	modbus_set_response_timeout(ctx, &response_timeout);
+//	modbus_set_byte_timeout(ctx, &response_timeout);
+
+//	modbus_flush(ctx);
 //
 //	uint8_t *tab_bytes = NULL;
 //	rc = modbus_report_slave_id(mb, tab_bytes);
@@ -88,9 +91,9 @@ void Modbus::testrun() {
 	uint16_t v1, v2 = 0;
 
 	 while(v1 != 666 && v2 != 666) {
-		readRegisters(reg1, 1, &v1);
-		std::cin >> v1;
-		writeRegisters(reg1, 1, &v1);
+//		readRegisters(reg1, 1, &v1);
+//		std::cin >> v1;
+//		writeRegisters(reg1, 1, &v1);
 
 		readRegisters(reg2, 1, &v2);
 		std::cin >> v2;
