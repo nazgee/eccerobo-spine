@@ -11,10 +11,9 @@
 #include <cfg/SerialConfig.h>
 
 #include <modbus/modbus.h>
-#include <exceptions/ModbusException.h>
 #include <string>
 
-
+namespace ecce {
 class Modbus {
 private:
 	modbus_t *ctx;
@@ -27,6 +26,6 @@ public:
 	void readRegisters(int addr, int nb, uint16_t* buff);
 	void writeRegisters(int addr, int nb, uint16_t* buff);
 };
-
+}
 
 #endif /* MB_H_ */

@@ -10,6 +10,7 @@
 
 #include "TokenizingException.h"
 #include "HandlerModbus.h"
+#include "../exceptions/ModbusException.h"
 
 namespace ecce {
 

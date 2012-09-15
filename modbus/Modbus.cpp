@@ -6,12 +6,12 @@
  */
 
 #include "Modbus.h"
+#include "../exceptions/ModbusException.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
+namespace ecce {
 Modbus::Modbus(SerialConfig config) {
 
 	ctx = modbus_new_rtu(config.device.c_str(), config.baud_rate,
@@ -31,11 +31,11 @@ Modbus::Modbus(SerialConfig config) {
 		throw ModbusException("modbus_set_slave");
 	}
 
-//	struct timeval response_timeout;
-//	response_timeout.tv_sec = 5;
-//	response_timeout.tv_usec = 0;
-//	modbus_set_response_timeout(mb, &response_timeout);
-//	modbus_set_byte_timeout(mb, &response_timeout);
+	struct timeval response_timeout;
+	response_timeout.tv_sec = 5;
+	response_timeout.tv_usec = 0;
+	modbus_set_response_timeout(ctx, &response_timeout);
+	modbus_set_byte_timeout(ctx, &response_timeout);
 //
 //	uint8_t *tab_bytes = NULL;
 //	rc = modbus_report_slave_id(mb, tab_bytes);
@@ -97,3 +97,4 @@ void Modbus::testrun() {
 		writeRegisters(reg2, 1, &v2);
 	}
 }
+} // namespace ecce
