@@ -18,13 +18,8 @@
 namespace ecce {
 static Logger logger("SpineServer");
 
-HandlerFile::HandlerFile(std::string file, bool write) :
-	mWrite(write) {
-	if (mWrite) {
-		mFile = open(file.c_str(), O_WRONLY);
-	} else {
-		mFile = open(file.c_str(), O_RDONLY);
-	}
+HandlerFile::HandlerFile(std::string file) {
+	mFile = open(file.c_str(), O_RDWR);
 	if (mFile < 0)
 		throw SystemException("open failed!");
 }
@@ -33,9 +28,12 @@ HandlerFile::~HandlerFile() {
 	close(mFile);
 }
 
-std::shared_ptr<osock::Message> HandlerFile::handle(const std::string& current_token, tokenizer::iterator &tok) {
+std::shared_ptr<osock::Message> HandlerFile::handle(
+		const std::string& previous_token,
+		const std::string& current_token,
+		tokenizer::iterator &tok) {
 	lseek(mFile, SEEK_SET, 0);
-	if (mWrite) {
+	if (previous_token == TOKEN_SET) {
 		std::string token = getToken(tok);
 		int written = write(token);
 		if (written < 0)

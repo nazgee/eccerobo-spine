@@ -24,11 +24,16 @@ class Handler {
 public:
 	static const std::string REPLY_OK;
 	static const std::string REPLY_ERR;
+	static const std::string TOKEN_GET;
+	static const std::string TOKEN_SET;
 
 	Handler();
 	virtual ~Handler();
 	void install(std::string chunk, Handler_p handler);
-	virtual std::shared_ptr<osock::Message> handle(const std::string& current_token, tokenizer::iterator &tok);
+	virtual std::shared_ptr<osock::Message> handle(
+			const std::string& previous_token,
+			const std::string& current_token,
+			tokenizer::iterator &tok);
 protected:
 	std::string getToken(tokenizer::iterator &tok);
 	Handler_p getHandler(std::string token);

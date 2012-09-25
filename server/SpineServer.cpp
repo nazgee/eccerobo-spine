@@ -11,6 +11,7 @@
 #include "TokenizingException.h"
 #include "HandlerModbus.h"
 #include "HandlerFile.h"
+#include "HandlerWheels.h"
 
 #include <boost/tokenizer.hpp>
 #include <map>
@@ -25,17 +26,19 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 	mHandler = Handler_p(new Handler());
 	Handler_p getter = Handler_p(new Handler());
 	Handler_p setter = Handler_p(new Handler());
+	Handler_p head = Handler_p(new HandlerFile("/dev/servodrive0"));
+	Handler_p wheel = Handler_p(new HandlerWheels(modbus));
 
-	mHandler->install("get", getter);
+	mHandler->install(Handler::TOKEN_GET, getter);
 	getter->install("range", Handler_p(new HandlerFile("/dev/ultrasonic.0.hcsr04")));
-	getter->install("engine", Handler_p(new HandlerModbus(modbus, 500)));
-	getter->install("head", Handler_p(new HandlerFile("/dev/servodrive1")));
-	getter->install("turn", Handler_p(new HandlerFile("/dev/servodrive0")));
+	setter->install(HandlerWheels::TOKEN_SPEED, wheel);
+	setter->install(HandlerWheels::TOKEN_TURN, wheel);
+	getter->install("head", head);
 
-	mHandler->install("set", setter);
-	setter->install("engine", Handler_p(new HandlerModbus(modbus, 500, true)));
-	setter->install("head", Handler_p(new HandlerFile("/dev/servodrive1", true)));
-	setter->install("turn", Handler_p(new HandlerFile("/dev/servodrive0", true)));
+	mHandler->install(Handler::TOKEN_SET, setter);
+	setter->install(HandlerWheels::TOKEN_SPEED, wheel);
+	setter->install(HandlerWheels::TOKEN_TURN, wheel);
+	setter->install("head", head);
 
 //	std::string s = "this is just a test, of -neg valuese -10\r\n";
 //	tokenizer tokens(s, boost::char_separator<char>(" \r\n"));
@@ -60,7 +63,7 @@ void SpineServer::Manage(osock::BIO_p bio) {
 		tokenizer tokens(msg, boost::char_separator<char>(" \r\n"));
 		tokenizer::iterator tok = tokens.begin();
 
-		parser.Send(*mHandler->handle("", tok).get());
+		parser.Send(*mHandler->handle("", "", tok).get());
 	}
 
 	NFO << "client is gone" << std::endl;

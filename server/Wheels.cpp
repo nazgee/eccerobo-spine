@@ -54,7 +54,8 @@ int8_t LOOKUP_GetSpeed(int8_t speed, int8_t turn, uint8_t right) {
 	return LOOKUP_ToSpeed(LOOKUP_Get(speed, turn, right));
 }
 
-Wheels::Wheels(std::shared_ptr<Modbus> modbus) : mModbus(modbus) {
+Wheels::Wheels(std::shared_ptr<Modbus> modbus) :
+		mModbus(modbus) {
 
 }
 

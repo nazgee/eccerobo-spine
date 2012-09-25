@@ -12,6 +12,8 @@ namespace ecce {
 
 const std::string Handler::REPLY_OK = "OK";
 const std::string Handler::REPLY_ERR = "ERR";
+const std::string Handler::TOKEN_GET = "get";
+const std::string Handler::TOKEN_SET = "set";
 
 Handler::Handler() {
 }
@@ -23,14 +25,18 @@ void Handler::install(std::string chunk, Handler_p handler) {
 	mHandlers[chunk] = handler;
 }
 
-std::shared_ptr<osock::Message> Handler::handle(const std::string& current_token, tokenizer::iterator &tok) {
+std::shared_ptr<osock::Message> Handler::handle(
+		const std::string& previous_token,
+		const std::string& current_token, tokenizer::iterator &tok) {
 	try {
 		std::string token = getToken(tok);
 		Handler_p handler = getHandler(token);
 		tok++;
-		return handler->handle(token, tok);
-	} catch (TokenizingException e) {
-		return std::shared_ptr<osock::Message>(new osock::StringMessage(REPLY_ERR + " " +e.what()));
+		return handler->handle(previous_token, token, tok);
+	} catch (TokenizingException& e) {
+		return std::shared_ptr<osock::Message>(
+				new osock::StringMessage(
+						REPLY_ERR + " " + e.what()));
 	}
 }
 

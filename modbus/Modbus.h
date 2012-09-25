@@ -21,7 +21,6 @@ private:
 public:
 	Modbus(SerialConfig config);
 	~Modbus();
-	void testrun();
 	void readInputRegisters(int addr, int nb, uint16_t* buff);
 	void readRegisters(int addr, int nb, uint16_t* buff);
 	void writeRegisters(int addr, int nb, uint16_t* buff);

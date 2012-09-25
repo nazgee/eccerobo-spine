@@ -9,6 +9,9 @@
 #define WHEELS_H_
 
 #include <stdint.h>
+#include <memory>
+
+#include "../modbus/Modbus.h"
 
 namespace ecce {
 

@@ -12,6 +12,8 @@ OBJS =	spine.o \
 	misc/Logger.o \
 	server/SpineServer.o \
 	server/Handler.o \
+	server/Wheels.o \
+	server/HandlerWheels.o \
 	server/HandlerModbus.o \
 	server/HandlerFile.o
 

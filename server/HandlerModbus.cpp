@@ -14,21 +14,22 @@
 
 namespace ecce {
 
-HandlerModbus::HandlerModbus(std::shared_ptr<Modbus> modbus, int address, bool write) :
+HandlerModbus::HandlerModbus(std::shared_ptr<Modbus> modbus, int address) :
 		mModbus(modbus),
-		mModbusAddress(address),
-		mWrite(write) {
+		mModbusAddress(address) {
 
 }
 
 HandlerModbus::~HandlerModbus() {
 }
 
-std::shared_ptr<osock::Message> HandlerModbus::handle(const std::string& current_token, tokenizer::iterator &tok) {
+std::shared_ptr<osock::Message> HandlerModbus::handle(
+		const std::string& previous_token,
+		const std::string& current_token, tokenizer::iterator &tok) {
 
 	uint16_t value;
 	try {
-		if (mWrite) {
+		if (previous_token == TOKEN_SET) {
 			std::string token = getToken(tok);
 			try {
 				value = boost::lexical_cast<uint16_t>(token);
@@ -36,14 +37,16 @@ std::shared_ptr<osock::Message> HandlerModbus::handle(const std::string& current
 				throw TokenizingException("bad param (" + token + " is not an int)");
 			}
 			write(value);
-			return std::shared_ptr<osock::Message>(	new osock::StringMessage(REPLY_OK));
+			return std::shared_ptr<osock::Message>(new osock::StringMessage(REPLY_OK));
 		} else {
 			value = read();
 			std::string res = REPLY_OK + " " + boost::lexical_cast<std::string>(value);
 			return std::shared_ptr<osock::Message>(	new osock::StringMessage(res));
 		}
-	} catch (ModbusException e) {
-		return std::shared_ptr<osock::Message>(	new osock::StringMessage(REPLY_ERR + " " + current_token + " " +  e.what()));
+	} catch (ModbusException& e) {
+		return std::shared_ptr<osock::Message>(
+				new osock::StringMessage(
+						REPLY_ERR + " " + current_token + " " + e.what()));
 	}
 }
 

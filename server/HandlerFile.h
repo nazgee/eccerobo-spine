@@ -14,11 +14,13 @@ namespace ecce {
 
 class HandlerFile: public ecce::Handler {
 	int mFile;
-	bool mWrite;
 public:
-	HandlerFile(std::string file, bool write = false);
+	HandlerFile(std::string file);
 	virtual ~HandlerFile();
-	std::shared_ptr<osock::Message> handle(const std::string& current_token, tokenizer::iterator &tok);
+	std::shared_ptr<osock::Message> handle(
+			const std::string& previous_token,
+			const std::string& current_token,
+			tokenizer::iterator &tok);
 protected:
 	int write(const std::string& data2write);
 	int read(const void *p, size_t want);

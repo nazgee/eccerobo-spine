@@ -84,20 +84,4 @@ void Modbus::writeRegisters(int addr, int nb, uint16_t* buff) {
 	}
 	std::cout << "write: " << toString(addr, rc, buff) << std::endl;
 }
-
-void Modbus::testrun() {
-	int reg1 = 499;
-	int reg2 = 500;
-	uint16_t v1, v2 = 0;
-
-	 while(v1 != 666 && v2 != 666) {
-//		readRegisters(reg1, 1, &v1);
-//		std::cin >> v1;
-//		writeRegisters(reg1, 1, &v1);
-
-		readRegisters(reg2, 1, &v2);
-		std::cin >> v2;
-		writeRegisters(reg2, 1, &v2);
-	}
-}
 } // namespace ecce
