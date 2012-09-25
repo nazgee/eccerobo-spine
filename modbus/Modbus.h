@@ -25,6 +25,11 @@ public:
 	void readInputRegisters(int addr, int nb, uint16_t* buff);
 	void readRegisters(int addr, int nb, uint16_t* buff);
 	void writeRegisters(int addr, int nb, uint16_t* buff);
+
+	enum eRegisters {
+		REG_MOTORS_LEFT = 499,
+		REG_MOTORS_RIGHT = 500
+	};
 };
 }
 
