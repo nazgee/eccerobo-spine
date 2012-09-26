@@ -13,7 +13,7 @@ namespace ecce {
 #define SPEED_MAX 32767
 #define SPEED_MIN 16535
 #define LOOKUP_SIZE 9
-#define SPEED_STEP ((SPEED_MAX-SPEED_MIN) / (LOOKUP_SIZE/2-1))
+#define SPEED_STEP ((SPEED_MAX-SPEED_MIN) / (LOOKUP_SIZE/2 - 1))
 
 static int8_t lookup[][LOOKUP_SIZE] = {
 //	L				C				R
@@ -40,17 +40,17 @@ int8_t LOOKUP_Get(int8_t speed, int8_t turn, uint8_t translate) {
 	}
 }
 
-int16_t LOOKUP_ToSpeed(int8_t step) {
+int16_t LOOKUP_ToSpeed(int16_t step) {
 	if (step < 0) {
-		return -SPEED_MIN + step * SPEED_STEP;
+		return -SPEED_MIN + (step+1) * SPEED_STEP;
 	} else if (step > 0) {
-		return SPEED_MIN + step * SPEED_STEP;
+		return SPEED_MIN + (step-1) * SPEED_STEP;
 	} else {
 		return 0;
 	}
 }
 
-int8_t LOOKUP_GetSpeed(int8_t speed, int8_t turn, uint8_t right) {
+int16_t LOOKUP_GetSpeed(int8_t speed, int8_t turn, uint8_t right) {
 	return LOOKUP_ToSpeed(LOOKUP_Get(speed, turn, right));
 }
 

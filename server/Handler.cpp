@@ -32,7 +32,7 @@ std::shared_ptr<osock::Message> Handler::handle(
 		std::string token = getToken(tok);
 		Handler_p handler = getHandler(token);
 		tok++;
-		return handler->handle(previous_token, token, tok);
+		return handler->handle(current_token, token, tok);
 	} catch (TokenizingException& e) {
 		return std::shared_ptr<osock::Message>(
 				new osock::StringMessage(

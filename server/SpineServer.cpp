@@ -26,13 +26,13 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 	mHandler = Handler_p(new Handler());
 	Handler_p getter = Handler_p(new Handler());
 	Handler_p setter = Handler_p(new Handler());
-	Handler_p head = Handler_p(new HandlerFile("/dev/servodrive0"));
+	Handler_p head = Handler_p(new HandlerFile("/dev/servodrive1"));
 	Handler_p wheel = Handler_p(new HandlerWheels(modbus));
 
 	mHandler->install(Handler::TOKEN_GET, getter);
 	getter->install("range", Handler_p(new HandlerFile("/dev/ultrasonic.0.hcsr04")));
-	setter->install(HandlerWheels::TOKEN_SPEED, wheel);
-	setter->install(HandlerWheels::TOKEN_TURN, wheel);
+	getter->install(HandlerWheels::TOKEN_SPEED, wheel);
+	getter->install(HandlerWheels::TOKEN_TURN, wheel);
 	getter->install("head", head);
 
 	mHandler->install(Handler::TOKEN_SET, setter);
