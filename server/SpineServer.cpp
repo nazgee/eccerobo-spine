@@ -39,13 +39,6 @@ SpineServer::SpineServer(std::shared_ptr<Modbus> modbus, osock::Auth_p auth, std
 	setter->install(HandlerWheels::TOKEN_SPEED, wheel);
 	setter->install(HandlerWheels::TOKEN_TURN, wheel);
 	setter->install("head", head);
-
-//	std::string s = "this is just a test, of -neg valuese -10\r\n";
-//	tokenizer tokens(s, boost::char_separator<char>(" \r\n"));
-//
-//	for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter)
-//		std::cout << "<" << *tok_iter << "> ";
-//	std::cout << "\n";
 }
 
 SpineServer::~SpineServer() {
