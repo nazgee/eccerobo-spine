@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 
 	// Prevent zombies creation
 	osock::Server::InstallChildReaper();
-	SpineServer server = SpineServer(modbus, osock::AuthNone::Populate(), cfg.getPort());
+	SpineServer server = SpineServer(modbus, osock::AuthNone::Populate(), cfg.getPort(), osock::Server::serviceType::serviceThread);
 	server.Start();
 
 	return EXIT_SUCCESS;

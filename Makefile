@@ -27,7 +27,7 @@ else
 CXXFLAGS += $(shell pkg-config --cflags libmodbus)
 endif
 
-LIBS += -lmodbus -losock-1.0
+LIBS += -lmodbus -losock-1.0 -lboost_thread-mt
 
 
 $(TARGET):	$(OBJS)
