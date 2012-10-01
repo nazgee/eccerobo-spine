@@ -21,7 +21,7 @@ static Logger logger("SpineServer");
 HandlerFile::HandlerFile(std::string file) {
 	mFile = open(file.c_str(), O_RDWR);
 	if (mFile < 0)
-		throw SystemException("open failed!");
+		throw SystemException(file + " open failed!");
 }
 
 HandlerFile::~HandlerFile() {
