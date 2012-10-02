@@ -66,7 +66,7 @@ void Modbus::readInputRegisters(int addr, int nb, uint16_t* buff) {
 	if (rc == -1) {
 		throw ModbusException("modbus_read_input_registers");
 	}
-	std::cout << "read input: " << toString(addr, rc, buff) << std::endl;
+//	std::cout << "read input: " << toString(addr, rc, buff) << std::endl;
 }
 
 void Modbus::readRegisters(int addr, int nb, uint16_t* buff) {
@@ -74,7 +74,7 @@ void Modbus::readRegisters(int addr, int nb, uint16_t* buff) {
 	if (rc == -1) {
 		throw ModbusException("modbus_read_input_registers");
 	}
-	std::cout << "read: " << toString(addr, rc, buff) << std::endl;
+//	std::cout << "read: " << toString(addr, rc, buff) << std::endl;
 }
 
 void Modbus::writeRegisters(int addr, int nb, uint16_t* buff) {
@@ -82,6 +82,6 @@ void Modbus::writeRegisters(int addr, int nb, uint16_t* buff) {
 	if (rc == -1) {
 		throw ModbusException("modbus_write_registers");
 	}
-	std::cout << "write: " << toString(addr, rc, buff) << std::endl;
+//	std::cout << "write: " << toString(addr, rc, buff) << std::endl;
 }
 } // namespace ecce

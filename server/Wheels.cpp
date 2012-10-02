@@ -40,7 +40,7 @@ int8_t LOOKUP_Get(int8_t speed, int8_t turn, uint8_t translate) {
 	}
 }
 
-int16_t LOOKUP_ToSpeed(int16_t step) {
+int16_t LOOKUP_ToLateralSpeed(int16_t step) {
 	if (step < 0) {
 		return -SPEED_MIN + (step+1) * SPEED_STEP;
 	} else if (step > 0) {
@@ -50,13 +50,13 @@ int16_t LOOKUP_ToSpeed(int16_t step) {
 	}
 }
 
-int16_t LOOKUP_GetSpeed(int8_t speed, int8_t turn, uint8_t right) {
-	return LOOKUP_ToSpeed(LOOKUP_Get(speed, turn, right));
+int16_t LOOKUP_GetLateralSpeed(int8_t speed, int8_t turn, uint8_t right) {
+	return LOOKUP_ToLateralSpeed(LOOKUP_Get(speed, turn, right));
 }
 
 Wheels::Wheels(std::shared_ptr<Modbus> modbus) :
 		mModbus(modbus) {
-
+	update(this->speed, this->turn);
 }
 
 Wheels::~Wheels() {
@@ -64,20 +64,20 @@ Wheels::~Wheels() {
 }
 
 void Wheels::setSpeed(int8_t speed) {
+	update(speed, this->turn);
 	this->speed = speed;
-	update();
 }
 
 void Wheels::setTurn(int8_t turn) {
+	update(this->speed, turn);
 	this->turn = turn;
-	update();
 }
 
-void Wheels::update() {
-	uint16_t l = LOOKUP_GetSpeed(this->speed, this->turn, 0);
-	uint16_t r = LOOKUP_GetSpeed(this->speed, this->turn, 1);
-	mModbus->writeRegisters(Modbus::eRegisters::REG_MOTORS_LEFT, 1, &l);
-	mModbus->writeRegisters(Modbus::eRegisters::REG_MOTORS_RIGHT, 1, &r);
+void Wheels::update(int8_t speed, int8_t turn) {
+	uint16_t regs[2];
+	regs[0] = LOOKUP_GetLateralSpeed(speed, turn, 0); // left
+	regs[1] = LOOKUP_GetLateralSpeed(speed, turn, 1); // right
+	mModbus->writeRegisters(Modbus::eRegisters::REG_MOTORS_LEFT, 2, regs);
 }
 
 } /* namespace ecce */

@@ -19,7 +19,7 @@ class Wheels {
 	int8_t speed;
 	int8_t turn;
 	std::shared_ptr<Modbus> mModbus;
-	void update();
+	void update(int8_t speed, int8_t turn);
 public:
 	Wheels(std::shared_ptr<Modbus> modbus);
 	virtual ~Wheels();

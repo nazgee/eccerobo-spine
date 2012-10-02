@@ -58,8 +58,6 @@ void SpineServer::Manage(osock::BIO_p bio) {
 
 		parser.Send(*mHandler->handle("", "", tok).get());
 	}
-
-	NFO << "client is gone" << std::endl;
 }
 
 } /* namespace ecce */

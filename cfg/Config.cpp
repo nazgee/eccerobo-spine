@@ -17,7 +17,7 @@
 
 Config::Config(int argc, char **argv) :
 	mSilent(0),
-	mPort("1111") {
+	mPort("7000") {
 	int c;
 
 	while (1) {

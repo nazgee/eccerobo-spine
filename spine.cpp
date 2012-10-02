@@ -30,16 +30,10 @@ int main(int argc, char **argv) {
 
 	std::shared_ptr<Modbus> modbus = std::shared_ptr<Modbus>(new Modbus(cfg.serial));
 
-//	modbus->testrun();
-//	while(1) {
-//		uint16_t val;
-//		modbus->readRegisters(500, 1, &val);
-//		val += 1;
-//		modbus->writeRegisters(500, 1, &val);
-//	}
-
 	// Prevent zombies creation
 	osock::Server::InstallChildReaper();
+
+	// Start server
 	SpineServer server = SpineServer(modbus, osock::AuthNone::Populate(), cfg.getPort(), osock::Server::serviceType::serviceThread);
 	server.Start();
 
