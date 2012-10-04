@@ -7,11 +7,16 @@
 
 #include "Modbus.h"
 #include "../exceptions/ModbusException.h"
+#include "../misc/Logger.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
 namespace ecce {
+
+static Logger logger("Modbus");
+#define RETRY_COUNT 3
+
 Modbus::Modbus(SerialConfig config) {
 
 	ctx = modbus_new_rtu(config.device.c_str(), config.baud_rate,
@@ -62,7 +67,14 @@ std::string Modbus::toString(int addr, int nb, uint16_t* buff) {
 	return ss.str();
 }
 void Modbus::readInputRegisters(int addr, int nb, uint16_t* buff) {
-	int rc = modbus_read_input_registers(ctx, addr, nb, buff);
+	int retry=RETRY_COUNT;
+	int rc;
+	do {
+		rc = modbus_read_input_registers(ctx, addr, nb, buff);
+		if (rc == -1)
+			WRN << "read input failed, retries left=" << retry << std::endl;
+	} while ((rc == -1) && (retry-- > 0));
+
 	if (rc == -1) {
 		throw ModbusException("modbus_read_input_registers");
 	}
@@ -70,7 +82,14 @@ void Modbus::readInputRegisters(int addr, int nb, uint16_t* buff) {
 }
 
 void Modbus::readRegisters(int addr, int nb, uint16_t* buff) {
-	int rc = modbus_read_registers(ctx, addr, nb, buff);
+	int retry=RETRY_COUNT;
+	int rc;
+	do {
+		rc = modbus_read_registers(ctx, addr, nb, buff);
+		if (rc == -1)
+			WRN << "read failed, retries left=" << retry << std::endl;
+	} while ((rc == -1) && (retry-- > 0));
+
 	if (rc == -1) {
 		throw ModbusException("modbus_read_input_registers");
 	}
@@ -78,7 +97,14 @@ void Modbus::readRegisters(int addr, int nb, uint16_t* buff) {
 }
 
 void Modbus::writeRegisters(int addr, int nb, uint16_t* buff) {
-	int rc = modbus_write_registers(ctx, addr, nb, buff);
+	int retry=RETRY_COUNT;
+	int rc;
+	do {
+		rc = modbus_write_registers(ctx, addr, nb, buff);
+		if (rc == -1)
+			WRN << "write failed, retries left=" << retry << std::endl;
+	} while ((rc == -1) && (retry-- > 0));
+
 	if (rc == -1) {
 		throw ModbusException("modbus_write_registers");
 	}
