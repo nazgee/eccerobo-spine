@@ -45,14 +45,29 @@ SpineServer::~SpineServer() {
 
 }
 
+
+
 void SpineServer::Manage(osock::BIO_p bio) {
 	osock::Parser parser(bio);
-
 	osock::StringMessage msg("", osock::http::NEWLINE);
 
-	while(1) {
-		parser.Receive(msg);
+	NFO << "new client connected" << std::endl;
 
+	boost::unique_lock<boost::mutex> lock(mSpineBusy, boost::try_to_lock);
+	if (!lock.owns_lock()) {
+		std::string s("ERR - spine in use!");
+		msg.setString(s);
+		parser.Send(msg);
+		WRN << "spine is busy! killing off client connection" << std::endl;
+		return;
+	}
+
+	NFO << "spine is taken over by new client" << std::endl;
+	osock::BIOSocket* sock = (osock::BIOSocket*)bio.get();
+	sock->setReadTimeout(5000);
+
+	while(1) {
+		parser.ReceiveWithoutRetry(msg);
 		tokenizer tokens(msg, boost::char_separator<char>(" \r\n"));
 		tokenizer::iterator tok = tokens.begin();
 

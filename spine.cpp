@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 	osock::Server::InstallChildReaper();
 
 	// Start server
-	SpineServer server = SpineServer(modbus, osock::AuthNone::Populate(), cfg.getPort(), osock::Server::serviceType::serviceThread);
+	SpineServer server(modbus, osock::AuthNone::Populate(), cfg.getPort(), osock::Server::serviceType::serviceThread);
 	server.Start();
 
 	return EXIT_SUCCESS;
