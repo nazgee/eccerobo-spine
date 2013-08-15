@@ -67,7 +67,7 @@ void SpineServer::Manage(osock::BIO_p bio) {
 	sock->setReadTimeout(5000);
 
 	while(1) {
-		parser.ReceiveWithoutRetry(msg);
+		parser.Receive(msg);
 		tokenizer tokens(msg, boost::char_separator<char>(" \r\n"));
 		tokenizer::iterator tok = tokens.begin();
 
